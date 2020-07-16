@@ -1,0 +1,14 @@
+{
+  "name": "audio_play_server",
+  "version": "1.0.0",
+  "description": "audio play server",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mj",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
