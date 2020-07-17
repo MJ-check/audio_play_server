@@ -8,4 +8,4 @@ function getMachine(req) {
   }
 }
 
-module.exports=getMachine;
+module.exports = getMachine;
