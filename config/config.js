@@ -3,13 +3,9 @@ const fs = require("fs");
 const path = require("path");
 
 const PORT = process.env.PORT || 3000;
-
 const home_path = "/";
-
 const music_file_path = "/public/music";
-
 const image_file_path = "/public/image";
-
 const list_image_path = "/public/list";
 
 const mysql_config = {
@@ -26,7 +22,6 @@ const storage_for_music = multer.diskStorage({
     const mime_type = file.mimetype;
     if (mime_type === "audio/mp3") {
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === true) {
-        // MP3文件不允许覆盖
         console.error(file);
         const err = new Error();
         err.name = "CoverageNotAllowed";
@@ -104,6 +99,7 @@ const storage_for_update_list_image = multer({
   },
 });
 
+// ==============================
 module.exports = { 
   PORT, 
   mysql_config,

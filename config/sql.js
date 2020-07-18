@@ -1,7 +1,9 @@
+// api_all_music
 const all_music = 
   "SELECT * FROM music " + 
   "ORDER BY music_id DESC;";
 
+// api_last_music || api_upload_music
 const last_music = (number) => {
   return (
     "SELECT * FROM music " + 
@@ -10,6 +12,7 @@ const last_music = (number) => {
   );
 };
 
+// api_music
 const music = (id) => {
   return (
     "SELECT * FROM music " + 
@@ -17,6 +20,7 @@ const music = (id) => {
   );
 };
 
+// api_collect_list
 const collect_list = 
   "SELECT * FROM collectlist " + 
   "ORDER BY list_id DESC;";
@@ -29,6 +33,7 @@ const list_name = (list_id) => {
   );
 };
 
+// api_list
 const list = (list_name) => {
   return(
     "SELECT music.music_id, music_name " + 
@@ -39,6 +44,7 @@ const list = (list_name) => {
   );
 };
 
+// api_status || api_add
 const status = (music_id) => {
   return (
     "SELECT a.list_id, list_name " + 
@@ -50,6 +56,7 @@ const status = (music_id) => {
   );
 };
 
+// api_add
 const add = (music_id, list_id, list_name) => {
   return (
     "INSERT INTO musicstatus (music_id,list_id) " + 
@@ -59,6 +66,7 @@ const add = (music_id, list_id, list_name) => {
   );
 };
 
+// api_remove
 const remove = (music_id, list_id, list_name) => {
   return (
     "DELETE FROM musicstatus " + 
@@ -68,6 +76,7 @@ const remove = (music_id, list_id, list_name) => {
   );
 };
 
+// api_upload_music
 const upload_music = (music_name) => {
   return (
     "INSERT INTO music (music_name) " + 
@@ -75,6 +84,7 @@ const upload_music = (music_name) => {
   );
 };
 
+// api_new_list
 const new_list = (list_name) => {
   return (
     "INSERT INTO collectlist (list_name) " + 
@@ -87,6 +97,7 @@ const new_list = (list_name) => {
   );
 };
 
+// api_new_list
 const last_list = (number) => {
   return (
     "SELECT * FROM collectlist " + 
