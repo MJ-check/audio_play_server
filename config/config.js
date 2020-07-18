@@ -24,7 +24,7 @@ const storage_for_music = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log(file);
     const mime_type = file.mimetype;
-    if (mime_type === "audio/mp3" || mime_type === "audio/mpeg") {
+    if (mime_type === "audio/mp3") {
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === true) {
         // MP3文件不允许覆盖
         console.error(file);

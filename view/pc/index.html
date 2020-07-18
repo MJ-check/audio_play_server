@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,5 +7,45 @@
 </head>
 <body>
   <h1>pc</h1>
+  <input type="file" id="music-file"/>
+  <input type="file" id="image-file"/>
+  <input type="text" id="music-name">
+  <button type="button" id="submit-button">提交文件</button>
+
+  <script>
+    var music_file = document.getElementById("music-file");
+    var image_file = document.getElementById("image-file");
+    var music_name = document.getElementById("music-name");
+    var submit_button = document.getElementById("submit-button");
+    var formData = new FormData();
+
+    music_file.onchange = (event) => {
+      formData.append("music", event.target.files[0]);
+    }
+
+    image_file.onchange = (event) => {
+      formData.append("music", event.target.files[0]);
+    }
+
+    music_name.onchange = (event) => {
+      formData.append("music_name", event.target.value);
+    }
+
+    submit_button.addEventListener("click", () => {
+      if (formData.getAll("music").length !== 0) {
+        fetch("/api/upload_music", {
+          method: "POST",
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => console.error(err));
+      } else {
+        alert("请选择文件");
+      }
+    });
+  </script>
 </body>
 </html>
