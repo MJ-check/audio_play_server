@@ -2,7 +2,6 @@
 const all_music = 
   "SELECT * FROM music " + 
   "ORDER BY music_id DESC;";
-
 // api_last_music || api_upload_music
 const last_music = (number) => {
   return (
@@ -11,7 +10,6 @@ const last_music = (number) => {
     "LIMIT " + number + ";"
   );
 };
-
 // api_music
 const music = (id) => {
   return (
@@ -19,11 +17,17 @@ const music = (id) => {
     "WHERE music_id=" + id + ";"
   );
 };
-
 // api_collect_list
 const collect_list = 
   "SELECT * FROM collectlist " + 
   "ORDER BY list_id DESC;";
+// api_new_list
+const search_list = (list_name) => {
+  return (
+    "SELECT * FROM collectlist " + 
+    "WHERE list_name=\"" + list_name + "\";"
+  );
+};
 
 const list_name = (list_id) => {
   return (
@@ -32,7 +36,6 @@ const list_name = (list_id) => {
     "WHERE list_id=" + list_id + ";"
   );
 };
-
 // api_list
 const list = (list_name) => {
   return(
@@ -43,7 +46,6 @@ const list = (list_name) => {
     "ORDER BY music_id DESC;"
   );
 };
-
 // api_status || api_add
 const status = (music_id) => {
   return (
@@ -55,7 +57,6 @@ const status = (music_id) => {
     "ORDER BY a.list_id DESC;"
   );
 };
-
 // api_add
 const add = (music_id, list_id, list_name) => {
   return (
@@ -65,7 +66,6 @@ const add = (music_id, list_id, list_name) => {
     "VALUES (" + music_id + ");"
   );
 };
-
 // api_remove
 const remove = (music_id, list_id, list_name) => {
   return (
@@ -75,7 +75,6 @@ const remove = (music_id, list_id, list_name) => {
     "WHERE music_id=" + music_id + ";"
   );
 };
-
 // api_upload_music
 const upload_music = (music_name) => {
   return (
@@ -83,7 +82,6 @@ const upload_music = (music_name) => {
     "VALUES (\"" + music_name + "\");"
   );
 };
-
 // api_new_list
 const new_list = (list_name) => {
   return (
@@ -96,7 +94,6 @@ const new_list = (list_name) => {
     ")CHARSET=utf8;"
   );
 };
-
 // api_new_list
 const last_list = (number) => {
   return (
@@ -119,4 +116,5 @@ module.exports = {
   upload_music,
   new_list,
   last_list,
+  search_list,
 }

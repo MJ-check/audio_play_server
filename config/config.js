@@ -18,7 +18,6 @@ const mysql_config = {
 
 const storage_for_music = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log(file);
     const mime_type = file.mimetype;
     if (mime_type === "audio/mp3") {
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === true) {
@@ -28,9 +27,11 @@ const storage_for_music = multer.diskStorage({
         err.message = "coverage_not_allowed";
         cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
       } else {
+        console.log(file);
         cb(null, path.join(path.resolve(__dirname, ".."), "public/music"));
       }
     } else if (mime_type === "image/png") {
+      console.log(file);
       cb(null, path.join(path.resolve(__dirname, ".."), "public/image"));
     } else {
       console.error(file);
@@ -49,6 +50,7 @@ const storage_for_list = multer.diskStorage({
   destination: (req, file, cb) => {
     const mime_type = file.mimetype;
     if (mime_type === "image/png") {
+      console.log(file);
       cb(null, path.join(path.resolve(__dirname, ".."), "public/list"));
     } else {
       console.error(file);
@@ -67,6 +69,7 @@ const storage_for_update_music_image = multer.diskStorage({
   destination: (req, file, cb) => {
     const mime_type = file.mimetype;
     if (mime_type === "image/png") {
+      console.log(file);
       cb(null, path.join(path.resolve(__dirname, ".."), "public/image"));
     } else {
       console.error(file);
@@ -81,10 +84,11 @@ const storage_for_update_music_image = multer.diskStorage({
   },
 });
 
-const storage_for_update_list_image = multer({
+const storage_for_update_list_image = multer.diskStorage({
   destination: (req, file, cb) => {
-    const mime_type = file.mime_type;
+    const mime_type = file.mimetype;
     if (mime_type === "image/png") {
+      console.log(file);
       cb(null, path.join(path.resolve(__dirname, ".."), "public/list"));
     } else {
       console.error(file);
