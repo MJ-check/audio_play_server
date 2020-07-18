@@ -55,7 +55,7 @@ app.get("/api/all_music", (req, res) => {
 
 app.get("/api/last_music", (req, res) => {
   console.log("GET at path: /api/last_music || host is: " + req.ip);
-  connection.query(sql.last_music, (err, result) => {
+  connection.query(sql.last_music(5), (err, result) => {
     if (err) {
       console.error(err.message);
       res.status(200).json({ status: "fail" });
@@ -243,12 +243,19 @@ app.post("/api/upload_music",
         res.status(200).json({ status: "fail" });
         return ;
       }
-      res.status(200).json({
-        status: "success",
-        data: {
-          music_id: result[0].music_id,
-          music_name: result[0].music_name,
-        },
+      connection.query(sql.last_music(1), (err, result) => {
+        if (err) {
+          console.error(err.message);
+          res.status(200).json({ status: "fail" });
+          return ;
+        }
+        res.status(200).json({
+          status: "success",
+          data: {
+            music_id: result[0].music_id,
+            music_name: result[0].music_name,
+          },
+        });
       });
     });
 });
@@ -293,21 +300,15 @@ app.post("/api/update_list_image",
 });
 
 // ============== 404 and 500 ===================
-app.set((req, res, next) => {
-  console.log("404 - Not Found")
-  res.status(404);
-  res.sendFile(path.join(__dirname, "view/common/404.html"));
-});
-
-app.set((err, req, res, next) => {
+app.use((err, req, res, next) => {
   if (err.name === "TypeError" && err.message === "wrong_file_type") {
-    console.log("wrong_file_type");
+    console.error("wrong_file_type");
     res.status(200).json({
       status: "error",
       statement: "wrong_file_type",
     });
   } else if (err.name === "CoverageNotAllowed" && err.message === "coverage_not_allowed") {
-    console.log("coverage_not_allowed");
+    console.error("coverage_not_allowed");
     res.status(200).json({
       status: "error",
       statement: "coverage_not_allowed",

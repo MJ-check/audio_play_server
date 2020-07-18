@@ -23,23 +23,25 @@ const mysql_config = {
 const storage_for_music = multer.diskStorage({
   destination: (req, file, cb) => {
     const mime_type = file.mimetype;
-    if (mime_type === "audio/mp3") {
-      if (fs.existsSync(path.join(__dirname, "../public/music/" + file.originalname)) === true) {
+    if (mime_type === "audio/mp3" || mime_type === "audio/mpeg") {
+      if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === true) {
         // MP3文件不允许覆盖
+        console.error(file);
         const err = new Error();
         err.name = "CoverageNotAllowed";
         err.message = "coverage_not_allowed";
-        cb(err, path.join(__dirname, "../public/rubbish"));
+        cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
       } else {
-        cb(null, path.join(__dirname, "../public/music"));
+        cb(null, path.join(path.resolve(__dirname, ".."), "public/music"));
       }
     } else if (mime_type === "image/png") {
-      cb(null, path.join(__dirname, "../public/image"));
+      cb(null, path.join(path.resolve(__dirname, ".."), "public/image"));
     } else {
+      console.error(file);
       const err = new Error();
       err.name = "TypeError";
       err.message = "wrong_file_type";
-      cb(err, path.join(__dirname, "../public/rubbish"));
+      cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
     }
   },
   filename: (req, file, cb) => {
@@ -51,12 +53,13 @@ const storage_for_list = multer.diskStorage({
   destination: (req, file, cb) => {
     const mime_type = file.mimetype;
     if (mime_type === "image/png") {
-      cb(null, path.join(__dirname, "../public/list"));
+      cb(null, path.join(path.resolve(__dirname, ".."), "public/list"));
     } else {
+      console.error(file);
       const err = new Error();
       err.name = "TypeError";
       err.message = "wrong_file_type";
-      cb(err, path.join(__dirname, "../public/rubbish"));
+      cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
     }
   },
   filename: (req, file, cb) => {
@@ -68,12 +71,13 @@ const storage_for_update_music_image = multer.diskStorage({
   destination: (req, file, cb) => {
     const mime_type = file.mimetype;
     if (mime_type === "image/png") {
-      cb(null, path.join(__dirname, "../public/image"));
+      cb(null, path.join(path.resolve(__dirname, ".."), "public/image"));
     } else {
+      console.error(file);
       const err = new Error();
       err.name = "TypeError";
       err.message = "wrong_file_type";
-      cb(err, path.join(__dirname, "../public/rubbish"));
+      cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
     }
   },
   filename: (req, file, cb) => {
@@ -85,12 +89,13 @@ const storage_for_update_list_image = multer({
   destination: (req, file, cb) => {
     const mime_type = file.mime_type;
     if (mime_type === "image/png") {
-      cb(null, path.join(__dirname, "../public/list"));
+      cb(null, path.join(path.resolve(__dirname, ".."), "public/list"));
     } else {
+      console.error(file);
       const err = new Error();
       err.name = "TypeError";
       err.message = "wrong_file_type";
-      cb(err, path.join(__dirname, "../public/rubbish"));
+      cb(err, path.join(path.resolve(__dirname, ".."), "public/rubbish"));
     }
   },
   filename: (req, file, cb) => {

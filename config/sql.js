@@ -2,10 +2,13 @@ const all_music =
   "SELECT * FROM music " + 
   "ORDER BY music_id DESC;";
 
-const last_music = 
-  "SELECT * FROM music " + 
-  "ORDER BY music_id DESC " +
-  "LIMIT 5;";
+const last_music = (number) => {
+  return (
+    "SELECT * FROM music " + 
+    "ORDER BY music_id DESC " +
+    "LIMIT " + number + ";"
+  );
+};
 
 const music = (id) => {
   return (
@@ -68,10 +71,7 @@ const remove = (music_id, list_id, list_name) => {
 const upload_music = (music_name) => {
   return (
     "INSERT INTO music (music_name) " + 
-    "VALUES (" + music_name + "); " + 
-    "SELECT * FROM music " + 
-    "ORDER BY music_id DESC " + 
-    "LIMIT 1;"
+    "VALUES (" + music_name + ");"
   );
 };
 
