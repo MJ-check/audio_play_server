@@ -237,27 +237,36 @@ app.post("/api/upload_music",
   (req, res) => {
     console.log("POST at path: /api/upload_music || host is: " + req.ip);
     const musicName = req.body.music_name;
-    connection.query(sql.upload_music(musicName), (err, result) => {
-      if (err) {
-        console.error(err.message);
-        res.status(200).json({ status: "fail" });
-        return ;
-      }
-      connection.query(sql.last_music(1), (err, result) => {
+    if (musicName) {
+      connection.query(sql.upload_music(musicName), (err, result) => {
         if (err) {
           console.error(err.message);
           res.status(200).json({ status: "fail" });
           return ;
         }
-        res.status(200).json({
-          status: "success",
-          data: {
-            music_id: result[0].music_id,
-            music_name: result[0].music_name,
-          },
+        connection.query(sql.last_music(1), (err, result) => {
+          if (err) {
+            console.error(err.message);
+            res.status(200).json({ status: "fail" });
+            return ;
+          }
+          res.status(200).json({
+            status: "success",
+            data: {
+              music_id: result[0].music_id,
+              music_name: result[0].music_name,
+            },
+          });
         });
       });
-    });
+    } else {
+      console.error("ERROR: file_upload_fail");
+      res.status(200).json({ 
+        status: "error",
+        statement: "file_upload_fail",
+      });
+      return ;
+    }
 });
 
 app.post("/api/new_list", 
@@ -265,56 +274,92 @@ app.post("/api/new_list",
   (req, res) => {
     console.log("POST at path: /api/new_list || host is: " + req.ip);
     const listName = req.body.list_name;
-    connection.query(sql.new_list(listName), (err, result) => {
-      if (err) {
-        console.error(err.message);
-        res.status(200).json({ status: "fail" });
-        return ;
-      }
-      res.status(200).json({
-        status: "success",
-        data: {
-          list_id: result[0].list_id,
-          list_name: result[0].list_name,
-        },
+    if (listName) {
+      connection.query(sql.new_list(listName), (err, result) => {
+        if (err) {
+          console.error(err.message);
+          res.status(200).json({ status: "fail" });
+          return ;
+        }
+        connection.query(sql.last_list(1), (err, result) => {
+          if (err) {
+            console.error(err.message);
+            res.status(200).json({ status: "fail" });
+            return ;
+          }
+          res.status(200).json({
+            status: "success",
+            data: {
+              list_id: result[0].list_id,
+              list_name: result[0].list_name,
+            },
+          });
+        });
       });
-    });
+    } else {
+      console.error("ERROR: file_upload_fail");
+      res.status(200).json({ 
+        status: "error",
+        statement: "file_upload_fail",
+      });
+      return ;
+    }
 });
 
 app.post("/api/update_music_image", 
   multer({ storage: config.storage_for_update_music_image }).single("music_image"),
   (req, res) => {
     console.log("POST at path: /api/update_music_image || host is: " + req.ip);
-    res.status(200).json({
-      status: "success",
-    });
+    const musicName = req.body.music_name;
+    if (musicName) {
+      res.status(200).json({
+        status: "success",
+      });
+    } else {
+      console.error("ERROR: file_upload_fail");
+      res.status(200).json({ 
+        status: "error",
+        statement: "file_upload_fail",
+      });
+      return ;
+    }
 });
 
 app.post("/api/update_list_image",
   multer({ storage: config.storage_for_update_list_image }).single("list_image"),
   (req, res) => {
     console.log("POST at path: /api/update_list_image || host is: " + req.ip);
-    res.status(200).json({
-      status: "success",
-    });
+    const listName = req.body.list_name;
+    if (listName) {
+      res.status(200).json({
+        status: "success",
+      });
+    } else {
+      console.error("ERROR: file_upload_fail");
+      res.status(200).json({ 
+        status: "error",
+        statement: "file_upload_fail",
+      });
+      return ;
+    }
 });
 
 // ============== 404 and 500 ===================
 app.use((err, req, res, next) => {
   if (err.name === "TypeError" && err.message === "wrong_file_type") {
-    console.error("wrong_file_type");
+    console.error("ERROR: wrong_file_type");
     res.status(200).json({
       status: "error",
       statement: "wrong_file_type",
     });
   } else if (err.name === "CoverageNotAllowed" && err.message === "coverage_not_allowed") {
-    console.error("coverage_not_allowed");
+    console.error("ERROR: coverage_not_allowed");
     res.status(200).json({
       status: "error",
       statement: "coverage_not_allowed",
     });
   } else {
-    console.error("500 - Server Error");
+    console.error("ERROR: 500 - Server Error");
     console.error(err);
     res.status(500);
     res.sendFile(path.join(__dirname, "view/common/500.html"));

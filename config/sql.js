@@ -71,22 +71,27 @@ const remove = (music_id, list_id, list_name) => {
 const upload_music = (music_name) => {
   return (
     "INSERT INTO music (music_name) " + 
-    "VALUES (" + music_name + ");"
+    "VALUES (\"" + music_name + "\");"
   );
 };
 
 const new_list = (list_name) => {
   return (
     "INSERT INTO collectlist (list_name) " + 
-    "VALUES (" + list_name + "); " + 
+    "VALUES (\"" + list_name + "\"); " + 
     "CREATE TABLE " + list_name + " ( " + 
     "id INT AUTO_INCREMENT, " + 
     "music_id INT, " + 
     "PRIMARY KEY ( id ) " + 
-    ")CHARSET=utf8; " + 
+    ")CHARSET=utf8;"
+  );
+};
+
+const last_list = (number) => {
+  return (
     "SELECT * FROM collectlist " + 
     "ORDER BY list_id DESC " + 
-    "LIMIT 1;"
+    "LIMIT " + number + ";"
   );
 };
 
@@ -102,4 +107,5 @@ module.exports = {
   remove,
   upload_music,
   new_list,
+  last_list,
 }
