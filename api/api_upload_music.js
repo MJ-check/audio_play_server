@@ -3,8 +3,14 @@ const errorCode = require("../config/errorCode");
 
 const api_upload_music = (connection, req, res) => {
   console.log("POST at path: /api/upload_music || host is: " + req.ip);
-  const musicName = req.body.music_name;
-  if (musicName) {
+  var musicName = null;
+  req.files.forEach((item) => {
+    if (item.mimetype === "audio/mp3") {
+      musicName = item.originalname.slice(0, -4);
+    }
+  });
+  const music_name = req.body.music_name;
+  if (musicName && music_name) {
     connection.query(sql.upload_music(musicName), (err, result) => {
       if (err) {
         console.error(err.message);

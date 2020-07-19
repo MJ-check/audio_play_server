@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3005;
 const home_path = "/";
 const music_file_path = "/public/music";
 const image_file_path = "/public/image";
