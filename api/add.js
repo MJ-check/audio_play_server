@@ -1,4 +1,5 @@
 const sql = require("../config/sql");
+const errorCode = require("../config/errorCode");
 
 const add = (connection, req, res) => {
   console.log("POST at path: /api/add || host is: " + req.ip);
@@ -8,10 +9,9 @@ const add = (connection, req, res) => {
     connection.query(sql.add(music_id, list_id), (err, result) => {
       if (err) {
         if (err.code !== "ER_DUP_ENTRY") {
-          const error = new Error();
-          error.name = "DBInsertError";
-          error.message = err.message;
-          throw error;
+          console.error("ERROR: db_insert_error");
+          res.status(200).json(errorCode.error_252);
+          return ;
         }
       }
       res.status(200).json({

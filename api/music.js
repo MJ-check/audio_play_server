@@ -1,4 +1,5 @@
 const sql = require("../config/sql");
+const errorCode = require("../config/errorCode");
 
 const music = (connection, req, res) => {
   console.log("GET at path: /api/music || host is: " + req.ip);
@@ -6,10 +7,9 @@ const music = (connection, req, res) => {
   if (music_id) {
     connection.query(sql.music(music_id), (err, result) => {
       if (err) {
-        const error = new Error();
-        error.name = "DBSelectError";
-        error.message = err.message;
-        throw error;
+        console.error("ERROR: db_select_error");
+        res.status(200).json(errorCode.error_251);
+        return ;
       }
       res.status(200).json({
         status: "success",

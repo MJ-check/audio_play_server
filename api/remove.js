@@ -1,4 +1,5 @@
 const sql = require("../config/sql");
+const errorCode = require("../config/errorCode");
 
 const remove = (connection, req, res) => {
   console.log("POST at path: /api/remove || host is: " + req.ip);
@@ -7,10 +8,9 @@ const remove = (connection, req, res) => {
   if (music_id && list_id) {
     connection.query(sql.remove(music_id, list_id), (err, result) => {
       if (err) {
-        const error = new Error();
-        error.name = "DBDeleteError";
-        error.message = err.message;
-        throw error;
+        console.error("ERROR: db_delete_error");
+        res.status(200).json(errorCode.error_253);
+        return ;
       }
       res.status(200).json({
         status: "success",

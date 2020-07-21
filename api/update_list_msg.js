@@ -1,4 +1,5 @@
 const sql = require("../config/sql");
+const errorCode = require("../config/errorCode");
 
 const update_list_msg = (connection, req, res) => {
   console.log("POST at path: /api/update_list_msg || host is: " + req.ip);
@@ -7,10 +8,9 @@ const update_list_msg = (connection, req, res) => {
   if (list_id) {
     connection.query(sql.update_list_msg(list_id, list_new_msg), (err, result) => {
       if (err) {
-        const error = new Error();
-        error.name = "DBUpdateError";
-        error.message = "db_update_error";
-        throw error;
+        console.error("ERROR: db_update_error");
+        res.status(200).json(errorCode.error_255);
+        return ;
       }
       res.status(200).json({
         status: "success",

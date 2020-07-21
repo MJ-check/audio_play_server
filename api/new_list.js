@@ -1,4 +1,5 @@
 const sql = require("../config/sql");
+const errorCode = require("../config/errorCode");
 
 const new_list = (connection, req, res) => {
   console.log("POST at path: /api/new_list || host is: " + req.ip);
@@ -7,23 +8,20 @@ const new_list = (connection, req, res) => {
   if (list_name) {
     connection.query(sql.new_list_search(list_name), (err, result) => {
       if (err) {
-        const error = new Error();
-        error.name = "DBSelectError";
-        error.message = err.message;
-        throw error;
+        console.error("ERROR: db_select_error");
+        res.status(200).json(errorCode.error_251);
+        return ;
       } else {
         if (result && result.length !== 0) {
-          const error = new Error();
-          error.name = "DataAlreadyExist";
-          error.message = "data_already_exist";
-          throw error;
+          console.error("ERROR: DataAlreadyExist");
+          res.status(200).json(errorCode.error_210);
+          return ;
         } else {
           connection.query(sql.new_list(list_name, list_msg), (err, result) => {
             if (err) {
-              const error = new Error();
-              error.name = "DBInsertError";
-              error.message = err.message;
-              throw error;
+              console.error("ERROR: db_insert_error");
+              res.status(200).json(errorCode.error_252);
+              return ;
             }
             res.status(200).json({
               status: "success",

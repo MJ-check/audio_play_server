@@ -32,7 +32,7 @@ const error_222 = {
 const error_223 = {
   status: "error",
   code: 223,
-  statement: "file_error",
+  statement: "upload_file_error",
 }
 // 数据库查询错误
 const error_251 = {

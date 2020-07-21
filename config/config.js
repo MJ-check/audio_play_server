@@ -2,7 +2,7 @@ const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3000;
 
 const mysql_config = {
   host: "localhost",
@@ -16,7 +16,7 @@ const storage_for_upload_music = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log(file);
     if (file.mimetype === "audio/mp3") {
-      if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === true) {
+      if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === false) {
         cb(null, path.join(path.resolve(__dirname, ".."), "public/music"));
       } else {
         const err = new Error();

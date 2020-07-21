@@ -59,7 +59,12 @@ const upload_music_insert_music = (music_name) => {
   );
 };
 
-const upload_music_image_search = upload_music_search_music;
+const upload_music_image_search = (music_name) => {
+  return (
+    "SELECT * FROM music " +
+    "WHERE music_name=\"" + music_name + "\";"
+  );
+};
 
 const collect_list = () => {
   return (
@@ -93,7 +98,12 @@ const upload_list_image_search = (list_name) => {
   );
 };
 
-const new_list_search = upload_list_image_search;
+const new_list_search = (list_name) => {
+  return (
+    "SELECT * FROM list " + 
+    "WHERE list_name=\"" + list_name + "\";"
+  );
+};
 
 const update_list_msg = (list_id, list_new_msg) => {
   return (
