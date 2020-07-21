@@ -49,17 +49,11 @@ app.post(
   multer({ storage: config.storage_for_upload_music }).single("music_file"), 
   (req, res) => api.upload_music(connection, req, res)
 );
-// 上传音乐图片
+// 上传音乐图片 || 更新音乐图片
 app.post(
   "/api/upload_music_image",
-  multer({ storage: config.storage_for_upload_music_image }.single("music_image")),
+  multer({ storage: config.storage_for_upload_music_image }).single("music_image"),
   (req, res) => api.upload_music_image(connection, req, res)
-);
-// 更新音乐图片
-app.post(
-  "/api/update_music_image", 
-  multer({ storage: config.storage_for_update_music_image }).single("music_image"),
-  (req, res) => api.update_music_image(connection, req, res)
 );
 // 收藏夹相关API
 // 获取所有收藏夹信息
@@ -67,18 +61,13 @@ app.get("/api/collect_list", (req, res) => api.collect_list(connection, req, res
 // 获取收藏夹内音乐信息
 app.get("/api/list", (req, res) => api.list(connection, req, res));
 // 创建收藏夹
-app.post(
-  "/api/new_list", 
-  multer({ storage: config.storage_for_collect_list }).single("list_image"),
-  (req, res) => api.new_list(connection, req, res)
-);
+app.post("/api/new_list", (req, res) => api.new_list(connection, req, res));
 // 更新收藏夹图片
 app.post(
-  "/api/update_list_image",
-  multer({ storage: config.storage_for_update_list_image }).single("list_image"),
-  (req, res) => api.update_list_image(connection, req, res)
+  "/api/upload_list_image",
+  multer({ storage: config.storage_for_upload_list_image }).single("list_image"),
+  (req, res) => api.upload_list_image(connection, req, res)
 );
-app.post("/api/update_list_name", (req, res) => api.update_list_name(connection, req, res));
 app.post("/api/update_list_msg", (req, res) => api.update_list_msg(connection, req, res));
 
 // ============== 404 and 500 ===================

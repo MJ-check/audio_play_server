@@ -1,45 +1,37 @@
 const sql = require("../config/sql");
-const errorCode = require("../config/errorCode");
+const path = require("path");
 
 const upload_music = (connection, req, res) => {
   console.log("POST at path: /api/upload_music || host is: " + req.ip);
-  var musicName = null;
-  req.files.forEach((item) => {
-    if (item.mimetype === "audio/mp3") {
-      musicName = item.originalname.slice(0, -4);
-    }
-  });
-  const music_name = req.body.music_name;
-  if (musicName && music_name) {
-    connection.query(sql.upload_music(musicName), (err, result) => {
-      if (err) {
-        console.error(err.message);
-        res.status(200).json(errorCode.error_252);
-        return ;
-      }
-      connection.query(sql.last_music(1), (err, result) => {
+  const music_name = req.file.originalname.slice(0, -4);
+  connection.query(sql.upload_music_search_music(music_name), (err, result) => {
+    if (err) {
+      const error = new Error();
+      error.name = "FileError";
+      error.message = path.join(path.resolve(__dirname, ".."), "public/music/" + req.file.originalname);
+      throw error;
+    } else if(result && result.length !== 0) {
+      res.status(200).json({
+        status: "success",
+        code: 100,
+        statement: "success",
+      });
+    } else {
+      connection.query(sql.upload_music_insert_music(music_name), (err, result) => {
         if (err) {
-          console.error(err.message);
-          res.status(200).json(errorCode.error_251);
-          return ;
+          const error = new Error();
+          error.name = "FileError";
+          error.message = path.join(path.resolve(__dirname, ".."), "public/music/" + req.file.originalname);
+          throw error;
         }
         res.status(200).json({
           status: "success",
           code: 100,
           statement: "success",
-          data: {
-            music_id: result[0].music_id,
-            music_name: result[0].music_name,
-          },
         });
       });
-    });
-  } else {
-    console.error("ERROR: post_body_error");
-    console.error(req.body);
-    res.status(200).json(errorCode.error_201);
-    return ;
-  }
+    }
+  });
 };
 
 module.exports = upload_music;

@@ -1,54 +1,44 @@
 const sql = require("../config/sql");
-const errorCode = require("../config/errorCode");
 
 const new_list = (connection, req, res) => {
   console.log("POST at path: /api/new_list || host is: " + req.ip);
-  const listName = req.body.list_name;
-  if (listName) {
-    connection.query(sql.search_list(listName), (err, result) => {
+  const list_name = req.body.list_name;
+  const list_msg = req.body.list_msg;
+  if (list_name) {
+    connection.query(sql.new_list_search(list_name), (err, result) => {
       if (err) {
-        console.error(err.message);
-        res.status(200).json(errorCode.error_251);
-        return ;
-      }
-      if (result.length !== 0 
-        || listName === "music" 
-        || listName === "collectlist" 
-        || listName === "musicstatus"
-      ) {
-        console.error("ERROR: data_already_exist");
-        res.status(200).json(errorCode.error_210);
-        return ;
-      }
-      connection.query(sql.new_list(listName), (err, result) => {
-        if (err) {
-          console.error(err.message);
-          res.status(200).json(errorCode.error_254);
-          return ;
-        }
-        connection.query(sql.last_list(1), (err, result) => {
-          if (err) {
-            console.error(err.message);
-            res.status(200).json(errorCode.error_251);
-            return ;
-          }
-          res.status(200).json({
-            status: "success",
-            code: 100,
-            statement: "success",
-            data: {
-              list_id: result[0].list_id,
-              list_name: result[0].list_name,
-            },
+        const error = new Error();
+        error.name = "DBSelectError";
+        error.message = err.message;
+        throw error;
+      } else {
+        if (result && result.length !== 0) {
+          const error = new Error();
+          error.name = "DataAlreadyExist";
+          error.message = "data_already_exist";
+          throw error;
+        } else {
+          connection.query(sql.new_list(list_name, list_msg), (err, result) => {
+            if (err) {
+              const error = new Error();
+              error.name = "DBInsertError";
+              error.message = err.message;
+              throw error;
+            }
+            res.status(200).json({
+              status: "success",
+              code: 100,
+              statement: "success",
+            });
           });
-        });
-      });
+        }
+      }
     });
   } else {
-    console.error("ERROR: post_body_error");
-    console.error(req.body);
-    res.status(200).json(errorCode.error_201);
-    return ;
+    const error = new Error();
+    error.name = "PostBodyError";
+    error.message = "post_body_error " + JSON.stringify(req.body);
+    throw error;
   }
 };
 

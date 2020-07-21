@@ -1,15 +1,15 @@
 const sql = require("../config/sql");
-const errorCode = require("../config/errorCode");
 
 const list = (connection, req, res) => {
   console.log("POST at path: /api/list || host is: " + req.ip);
-  const listName = req.body.list_name;
-  if (listName) {
-    connection.query(sql.list(listName), (err, result) => {
+  const list_id = req.query.id;
+  if (list_id) {
+    connection.query(sql.list(list_id), (err, result) => {
       if (err) {
-        console.error(err.message);
-        res.status(200).json(errorCode.error_251);
-        return ;
+        const error = new Error();
+        error.name = "DBSelectError";
+        error.message = err.message;
+        throw error;
       }
       var data = [];
       result.forEach((item) => {
@@ -26,10 +26,10 @@ const list = (connection, req, res) => {
       });
     });
   } else {
-    console.error("ERROR: post_body_error");
-    console.error(req.body);
-    res.status(200).json(errorCode.error_201);
-    return ;
+    const error = new Error();
+    error.name = "PostBodyError";
+    error.message = "post_body_error " + JSON.stringify(req.query);
+    throw error;
   }
 };
 

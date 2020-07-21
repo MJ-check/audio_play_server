@@ -1,13 +1,13 @@
 const sql = require("../config/sql");
-const errorCode = require("../config/errorCode");
 
 const all_music = (connection, req, res) => {
   console.log("GET at path: /api/all_music || host is: " + req.ip);
-  connection.query(sql.all_music, (err, result) => {
+  connection.query(sql.all_music(), (err, result) => {
     if (err) {
-      console.error(err.message);
-      res.status(200).json(errorCode.error_251);
-      return ;
+      const error = new Error();
+      error.name = "DBSelectError";
+      error.message = err.message;
+      throw error;
     } 
     var data = [];
     result.forEach((item) => {
