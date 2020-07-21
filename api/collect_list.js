@@ -1,10 +1,9 @@
 const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
-const NUMBER = 5;
 
-const api_last_music = (connection, req, res) => {
-  console.log("GET at path: /api/last_music || host is: " + req.ip);
-  connection.query(sql.last_music(NUMBER), (err, result) => {
+const collect_list = (connection, req, res) => {
+  console.log("GET at path: /api/collect_list || host is: " + req.ip);
+  connection.query(sql.collect_list, (err, result) => {
     if (err) {
       console.error(err.message);
       res.status(200).json(errorCode.error_251);
@@ -13,8 +12,8 @@ const api_last_music = (connection, req, res) => {
     var data = [];
     result.forEach((item) => {
       data.push({
-        music_id: item.music_id,
-        music_name: item.music_name,
+        list_id: item.list_id,
+        list_name: item.list_name,
       });
     });
     res.status(200).json({
@@ -26,4 +25,4 @@ const api_last_music = (connection, req, res) => {
   });
 };
 
-module.exports = api_last_music;
+module.exports = collect_list;

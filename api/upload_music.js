@@ -1,7 +1,7 @@
 const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
 
-const api_upload_music = (connection, req, res) => {
+const upload_music = (connection, req, res) => {
   console.log("POST at path: /api/upload_music || host is: " + req.ip);
   var musicName = null;
   req.files.forEach((item) => {
@@ -36,9 +36,10 @@ const api_upload_music = (connection, req, res) => {
     });
   } else {
     console.error("ERROR: post_body_error");
+    console.error(req.body);
     res.status(200).json(errorCode.error_201);
     return ;
   }
 };
 
-module.exports = api_upload_music;
+module.exports = upload_music;

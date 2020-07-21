@@ -1,7 +1,7 @@
 const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
 
-const api_new_list = (connection, req, res) => {
+const new_list = (connection, req, res) => {
   console.log("POST at path: /api/new_list || host is: " + req.ip);
   const listName = req.body.list_name;
   if (listName) {
@@ -46,9 +46,10 @@ const api_new_list = (connection, req, res) => {
     });
   } else {
     console.error("ERROR: post_body_error");
+    console.error(req.body);
     res.status(200).json(errorCode.error_201);
     return ;
   }
 };
 
-module.exports = api_new_list;
+module.exports = new_list;

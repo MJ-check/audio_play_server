@@ -1,7 +1,7 @@
 const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
 
-const api_music = (connection, req, res) => {
+const music = (connection, req, res) => {
   console.log("GET at path: /api/music || host is: " + req.ip);
   connection.query(sql.music(req.query.id), (err, result) => {
     if (err) {
@@ -21,4 +21,4 @@ const api_music = (connection, req, res) => {
   });
 };
 
-module.exports = api_music;
+module.exports = music;
