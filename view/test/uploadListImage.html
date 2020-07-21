@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>uploadListImage</title>
+  <style>
+    * {
+      margin: 0px;
+      padding: 0px;
+    }
+    .container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 150px;
+    }
+    .title {
+      width: 100%;
+      text-align: center;
+      font-size: 80px;
+    }
+    #list-image {
+      font-size: 30px;
+      text-align: center;
+      margin-top: 50px;
+      padding-left: 200px;
+    }
+    #submit-button {
+      margin-top: 50px;
+      font-size: 25px;
+      padding: 0px 10px 0px 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">upload list image</div>
+    <input type="file" id="list-image"/>
+    <button type="button" id="submit-button">提交文件</button>
+  </div>
+
+  <script>
+    var list_image = document.getElementById("list-image");
+    var submit_button = document.getElementById("submit-button");
+    var formData = new FormData();
+    list_image.onchange = (event) => {
+      formData.append("list_image", event.target.files[0]);
+    }
+    submit_button.addEventListener("click", () => {
+      if (formData.getAll("list_image").length === 1) { 
+        fetch("/api/upload_list_image", {
+          method: "POST",
+          body: formData,
+        })
+        .then(res => res.json())
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => console.error(err));
+      } else {
+        alert("请选择文件");
+      }
+    });
+  </script>
+</body>
+</html>
