@@ -10,16 +10,23 @@ const music = (connection, req, res) => {
         console.error("ERROR: db_select_error");
         res.status(200).json(errorCode.error_251);
         return ;
+      } else {
+        if (result && result.length !== 0) {
+          res.status(200).json({
+            status: "success",
+            code: 100,
+            statement: "success",
+            data: {
+              music_id: result[0].music_id,
+              music_name: result[0].music_name,
+            },
+          });
+        } else {
+          console.error("ERROR: post_body_error");
+          res.status(200).json(errorCode.error_201);
+          return ;
+        }
       }
-      res.status(200).json({
-        status: "success",
-        code: 100,
-        statement: "success",
-        data: {
-          music_id: result[0].music_id,
-          music_name: result[0].music_name,
-        },
-      });
     });
   } else {
     const error = new Error();

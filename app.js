@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const fs = require("fs");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -13,19 +14,30 @@ const errorHandle = require("./utils/errorHandle");
 app.use("/public/music", express.static(path.join(__dirname, "public/music")));
 app.use("/public/image", express.static(path.join(__dirname, "public/image")));
 app.use("/public/list", express.static(path.join(__dirname, "public/list")));
-// ====================test======================
-app.use("/test", express.static(path.join(__dirname, "/view/test")));
-// ==============================================
-app.use((req, res, next) => {
-  if (getMachine(req) === "mobile") {
-    app.use("/", express.static(path.join(__dirname, "view/mobile")));
-  } else {
-    app.use("/", express.static(path.join(__dirname, "view/pc")));
-  }
-  next();
-});
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// ==============Router For PC And Mobile============
+app.get("/*", (req, res, next) => {
+  const request_path = req.path !== "/" ? req.path : "/index.html";
+  if (request_path.split("/")[1] !== "api") {
+    if (getMachine(req) === "mobile") {
+      if (fs.existsSync(path.join(__dirname, "view/mobile" + request_path)) === true) {
+        res.sendFile(path.join(__dirname, "view/mobile" + request_path));
+      } else {
+        res.status(404).sendFile(path.join(__dirname, "view/common/404.html"));
+      }
+    } else {
+      if (fs.existsSync(path.join(__dirname, "view/pc" + request_path)) === true) {
+        res.sendFile(path.join(__dirname, "view/pc" + request_path));
+      } else {
+        res.status(404).sendFile(path.join(__dirname, "view/common/404.html"));
+      }
+    }
+  } else {
+    next();
+  }
+});
 
 // =============== api ========================
 var connection = mysql.createConnection(config.mysql_config);
