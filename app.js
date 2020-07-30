@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
+const fs = require("fs");
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -18,12 +19,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // ==============Router For PC And Mobile============
 app.get("/*", (req, res, next) => {
-  var request_path = req.path !== "/" ? req.path : "/index.html";
+  const request_path = req.path !== "/" ? req.path : "/index.html";
   if (request_path.split("/")[1] !== "api") {
     if (getMachine(req) === "mobile") {
-      res.sendFile(path.join(__dirname, "view/mobile" + request_path));
+      if (fs.existsSync(path.join(__dirname, "view/mobile" + request_path)) === true) {
+        res.sendFile(path.join(__dirname, "view/mobile" + request_path));
+      } else {
+        res.status(404).sendFile(path.join(__dirname, "view/common/404.html"));
+      }
     } else {
-      res.sendFile(path.join(__dirname, "view/pc" + request_path));
+      if (fs.existsSync(path.join(__dirname, "view/pc" + request_path)) === true) {
+        res.sendFile(path.join(__dirname, "view/pc" + request_path));
+      } else {
+        res.status(404).sendFile(path.join(__dirname, "view/common/404.html"));
+      }
     }
   } else {
     next();
