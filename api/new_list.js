@@ -8,6 +8,7 @@ const new_list = (connection, req, res) => {
   if (list_name) {
     connection.query(sql.new_list_search(list_name), (err, result) => {
       if (err) {
+        console.error(err);
         console.error("ERROR: db_select_error");
         res.status(200).json(errorCode.error_251);
         return ;
@@ -19,6 +20,7 @@ const new_list = (connection, req, res) => {
         } else {
           connection.query(sql.new_list(list_name, list_msg), (err, result) => {
             if (err) {
+              console.error(err);
               console.error("ERROR: db_insert_error");
               res.status(200).json(errorCode.error_252);
               return ;

@@ -7,6 +7,7 @@ const list = (connection, req, res) => {
   if (list_id) {
     connection.query(sql.list(list_id), (err, result) => {
       if (err) {
+        console.error(err);
         console.error("ERROR: db_select_error");
         res.status(200).json(errorCode.error_251);
         return ;

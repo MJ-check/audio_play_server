@@ -8,6 +8,7 @@ const remove = (connection, req, res) => {
   if (music_id && list_id) {
     connection.query(sql.remove(music_id, list_id), (err, result) => {
       if (err) {
+        console.error(err);
         console.error("ERROR: db_delete_error");
         res.status(200).json(errorCode.error_253);
         return ;

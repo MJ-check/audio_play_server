@@ -5,6 +5,7 @@ const collect_list = (connection, req, res) => {
   console.log("GET at path: /api/collect_list || host is: " + req.ip);
   connection.query(sql.collect_list(), (err, result) => {
     if (err) {
+      console.error(err);
       console.error("ERROR: db_select_error");
       res.status(200).json(errorCode.error_251);
       return ;

@@ -28,18 +28,18 @@
        music_id INT AUTO_INCREMENT NOT NULL,
        music_name VARCHAR(40) NOT NULL,
        PRIMARY KEY ( music_id )
-   );
+   )CHARSET=utf8;
    CREATE TABLE list (
        list_id INT AUTO_INCREMENT NOT NULL,
        list_name VARCHAR(25) NOT NULL,
        list_msg VARCHAR(210),
        PRIMARY KEY ( list_id )
-   );
+   )CHARSET=utf8;
    CREATE TABLE sta (
        music_id INT NOT NULL,
        list_id INT NOT NULL,
        PRIMARY KEY ( music_id, list_id )
-   );
+   )CHARSET=utf8;
    ```
 
    

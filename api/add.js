@@ -9,6 +9,7 @@ const add = (connection, req, res) => {
     connection.query(sql.add(music_id, list_id), (err, result) => {
       if (err) {
         if (err.code !== "ER_DUP_ENTRY") {
+          console.error(err);
           console.error("ERROR: db_insert_error");
           res.status(200).json(errorCode.error_252);
           return ;
