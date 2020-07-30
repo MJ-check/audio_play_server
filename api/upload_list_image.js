@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs");
 
 const update_list_image = (connection, req, res) => {
-  console.log("POST at path: /api/update_list_image || host is: " + req.ip);
+  console.log("POST at path: /api/upload_list_image || host is: " + req.ip);
   const list_name = req.file.originalname.slice(0, -4);
   connection.query(sql.upload_list_image_search(list_name), (err, result) => {
     if (err) {

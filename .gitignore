@@ -1,1 +1,6 @@
 node_modules
+public/image/*.png
+public/list/*.png
+public/music/*.mp3
+public/rubbish/*.png
+public/rubbish/*.mp3
