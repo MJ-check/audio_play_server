@@ -8,6 +8,7 @@ const update_list_image = (connection, req, res) => {
   const list_name = req.file.originalname.slice(0, -4);
   connection.query(sql.upload_list_image_search(list_name), (err, result) => {
     if (err) {
+      console.error(err);
       console.error("ERROR: upload_file_error");
       const file = "public/list/" + req.file.originalname;
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {

@@ -8,6 +8,7 @@ const update_list_msg = (connection, req, res) => {
   if (list_id) {
     connection.query(sql.update_list_msg(list_id, list_new_msg), (err, result) => {
       if (err) {
+        console.error(err);
         console.error("ERROR: db_update_error");
         res.status(200).json(errorCode.error_255);
         return ;

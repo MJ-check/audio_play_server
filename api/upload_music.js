@@ -8,6 +8,7 @@ const upload_music = (connection, req, res) => {
   const music_name = req.file.originalname.slice(0, -4);
   connection.query(sql.upload_music_search_music(music_name), (err, result) => {
     if (err) {
+      console.error(err);
       console.error("ERROR: upload_file_error");
       const file = "public/music/" + req.file.originalname;
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {
@@ -26,6 +27,7 @@ const upload_music = (connection, req, res) => {
     } else {
       connection.query(sql.upload_music_insert_music(music_name), (err, result) => {
         if (err) {
+          console.error(err);
           console.error("ERROR: upload_file_error");
           const file = "public/music/" + req.file.originalname;
           if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {

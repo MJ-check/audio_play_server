@@ -8,6 +8,7 @@ const upload_music_image = (connection, req, res) => {
   const music_name = req.file.originalname.slice(0, -4);
   connection.query(sql.upload_music_image_search(music_name), (err, result) => {
     if (err) {
+      console.error(err);
       console.error("ERROR: upload_file_error");
       const file = "public/image/" + req.file.originalname;
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {

@@ -6,6 +6,7 @@ const status = (connection, req, res) => {
   const music_id = req.query.id;
   connection.query(sql.status(music_id), (err, result) => {
     if (err) {
+      console.error(err);
       console.error("ERROR: db_select_error");
       res.status(200).json(errorCode.error_251);
       return ;
