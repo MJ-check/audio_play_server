@@ -2,14 +2,14 @@ const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
 
 const update_list_msg = (connection, req, res) => {
-  console.log("POST at path: /api/update_list_msg || host is: " + req.ip);
+  //console.log("POST at path: /api/update_list_msg || host is: " + req.ip);
   const list_id = req.body.list_id;
   const list_new_msg = req.body.list_new_msg;
   if (list_id) {
     connection.query(sql.update_list_msg(list_id, list_new_msg), (err, result) => {
       if (err) {
-        console.error(err);
-        console.error("ERROR: db_update_error");
+        console.log(err);
+        console.log("ERROR: db_update_error");
         res.status(200).json(errorCode.error_255);
         return ;
       }

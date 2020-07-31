@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // ==============Router For PC And Mobile============
 app.get("/*", (req, res, next) => {
   const request_path = req.path !== "/" ? req.path : "/index.html";
+  console.log("At Path: " + request_path + " || Host is: " + req.ip);
   if (request_path.split("/")[1] !== "api") {
     if (getMachine(req) === "mobile") {
       if (fs.existsSync(path.join(__dirname, "view/mobile" + request_path)) === true) {

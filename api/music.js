@@ -2,13 +2,13 @@ const sql = require("../config/sql");
 const errorCode = require("../config/errorCode");
 
 const music = (connection, req, res) => {
-  console.log("GET at path: /api/music || host is: " + req.ip);
+  //console.log("GET at path: /api/music || host is: " + req.ip);
   const music_id = req.query.id;
   if (music_id) {
     connection.query(sql.music(music_id), (err, result) => {
       if (err) {
-        console.error(err);
-        console.error("ERROR: db_select_error");
+        console.log(err);
+        console.log("ERROR: db_select_error");
         res.status(200).json(errorCode.error_251);
         return ;
       } else {
@@ -23,7 +23,7 @@ const music = (connection, req, res) => {
             },
           });
         } else {
-          console.error("ERROR: post_body_error");
+          console.log("ERROR: post_body_error");
           res.status(200).json(errorCode.error_201);
           return ;
         }

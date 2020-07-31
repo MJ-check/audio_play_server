@@ -3,11 +3,11 @@ const errorCode = require("../config/errorCode");
 const NUMBER = 5;
 
 const last_music = (connection, req, res) => {
-  console.log("GET at path: /api/last_music || host is: " + req.ip);
+  //console.log("GET at path: /api/last_music || host is: " + req.ip);
   connection.query(sql.last_music(NUMBER), (err, result) => {
     if (err) {
-      console.error(err);
-      console.error("ERROR: db_select_error");
+      console.log(err);
+      console.log("ERROR: db_select_error");
       res.status(200).json(errorCode.error_251);
       return ;
     }
