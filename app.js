@@ -42,7 +42,23 @@ app.get("/*", (req, res, next) => {
 
 // =============== api ========================
 var connection = mysql.createConnection(config.mysql_config);
-connection.connect();
+connection.connect(err => {
+  if (err) {
+    console.error(err);
+  }
+});
+connection.on("error", err => {
+  if (err.code === "PROTOCOL_CONNECTION_LOST") {
+    console.log("DB Restart || " + err.message);
+    connection.connect(err => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  } else {
+    console.error(err);
+  }
+});
 // 音乐相关API
 // 获取所有音乐信息
 app.get("/api/all_music", (req, res) => api.all_music(connection, req, res));
