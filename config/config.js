@@ -15,7 +15,12 @@ const mysql_config = {
 const storage_for_upload_music = multer.diskStorage({
   destination: (req, file, cb) => {
     console.log(file);
-    if (file.mimetype === "audio/mp3") {
+    const file_type = file.mimetype;
+    const file_name = file.originalname;
+
+    /* 满足条件 1：是音频文件；2：尾缀是mp3 */
+    const type_check = /audio/.test(file_type) && file_name.split(".").slice(-1)[0] === "mp3";
+    if (type_check) {
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), "public/music/" + file.originalname)) === false) {
         cb(null, path.join(path.resolve(__dirname, ".."), "public/music"));
       } else {
@@ -32,8 +37,8 @@ const storage_for_upload_music = multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    const file_name = file.originalname.slice(0, -4);
-    if (file_name) {
+    const file_name = file.originalname;
+    if (file_name && file_name.slice(0, -4) !== "") {
       cb(null, file.originalname);
     } else {
       const error = new Error();
@@ -57,8 +62,8 @@ const storage_for_upload_music_image = multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    const file_name = file.originalname.slice(0, -4);
-    if (file_name) {
+    const file_name = file.originalname;
+    if (file_name && file_name.slice(0, -4) !== "") {
       cb(null, file.originalname);
     } else {
       const error = new Error();
@@ -82,8 +87,8 @@ const storage_for_upload_list_image = multer.diskStorage({
     }
   },
   filename: (req, file, cb) => {
-    const file_name = file.originalname.slice(0, -4);
-    if (file_name) {
+    const file_name = file.originalname;
+    if (file_name && file_name.slice(0, -4) !== "") {
       cb(null, file.originalname);
     } else {
       const error = new Error();
