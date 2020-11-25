@@ -4,17 +4,17 @@ const path = require("path");
 const fs = require("fs");
 
 const upload_music = (connection, req, res) => {
-  console.log("POST at path: /api/upload_music || host is: " + req.ip);
+  //console.log("POST at path: /api/upload_music || host is: " + req.ip);
   const music_name = req.file.originalname.slice(0, -4);
   connection.query(sql.upload_music_search_music(music_name), (err, result) => {
     if (err) {
-      console.error(err);
-      console.error("ERROR: upload_file_error");
+      console.log(err);
+      console.log("ERROR: upload_file_error");
       const file = "public/music/" + req.file.originalname;
       if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {
         fs.unlinkSync(path.join(path.resolve(__dirname, ".."), file));
       } else {
-        console.error("删除失败，文件不存在！");
+        console.log("删除失败，文件不存在！");
       }
       res.status(200).json(errorCode.error_223);
       return ;
@@ -27,13 +27,13 @@ const upload_music = (connection, req, res) => {
     } else {
       connection.query(sql.upload_music_insert_music(music_name), (err, result) => {
         if (err) {
-          console.error(err);
-          console.error("ERROR: upload_file_error");
+          console.log(err);
+          console.log("ERROR: upload_file_error");
           const file = "public/music/" + req.file.originalname;
           if (fs.existsSync(path.join(path.resolve(__dirname, ".."), file)) === true) {
             fs.unlinkSync(path.join(path.resolve(__dirname, ".."), file));
           } else {
-            console.error("删除失败，文件不存在！");
+            console.log("删除失败，文件不存在！");
           }
           res.status(200).json(errorCode.error_223);
           return ;
