@@ -2,7 +2,7 @@
 
 ## 开放音乐平台后端服务项目
 
-&emsp;&emsp;后端项目使用 nodejs + express + MySQL 搭建。目前项目版本为 V1.0 版本，后续会根据需求持续更新。
+&emsp;&emsp;后端项目使用 nodejs + express + MySQL 搭建。目前项目版本为 V1.1 版本，后续会根据需求持续更新。
 
 ## 项目部署
 
@@ -42,6 +42,12 @@
    )CHARSET=utf8;
    ```
 
-   
+   ## 相关项目链接
 
-   
+   Audio Play PC端项目：Audio Play Client
+
+   <https://github.com/MJ-check/audio_play_client>
+
+   Audio Play Mobile端项目：Audio Play Mobile
+
+   <https://github.com/MJ-check/audio_play_mobile>
