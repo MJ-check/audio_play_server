@@ -10,6 +10,12 @@ const error_202 = {
   code: 202,
   statement: "file_name_null",
 }
+// 数据库连接错误
+const error_203 = {
+  status: "error",
+  code: 203,
+  statement: "database_connection_error",
+}
 // 数据库插入的数据已存在
 const error_210 = {
   status: "error",
@@ -74,6 +80,7 @@ const error_300 = {
 module.exports = {
   error_201,
   error_202,
+  error_203,
   error_210,
   error_221,
   error_222,
